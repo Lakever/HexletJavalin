@@ -1,29 +1,39 @@
 @import gg.jte.Content
-@import org.example.hexlet.dto.courses.FooterPage
-@import org.example.hexlet.dto.courses.Page
-@import org.example.hexlet.dto.courses.UsersPage
-
-@param Page page
 @param Content content
-@param FooterPage footer
+@param Content footer = null
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    @if(page.getDescription() != null)
-        <meta name="description" content="${page.getDescription()}">
-    @endif
-    <title>${page.getTitle()}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hexlet Javalin Example</title>
 </head>
 <body>
-<h1>${page.getTitle()}</h1>
-<div class="content">
+<nav>
+    <div>
+        <ul>
+            <li>
+                <a href="/">Home</a>
+            </li>
+            <li >
+                <a href="/users">Users</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div>
     ${content}
 </div>
-@if(footer != null)
-    <div class="footer">
-        ${footer.getDesc()}
-    </div>
+
+@if (footer != null)
+    <footer>
+        <div>
+            ${footer}
+        </div>
+    </footer>
 @endif
+
 </body>
 </html>

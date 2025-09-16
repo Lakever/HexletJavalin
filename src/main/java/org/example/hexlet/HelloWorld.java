@@ -3,12 +3,12 @@ package org.example.hexlet;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 import static io.javalin.rendering.template.TemplateUtil.model;
+import org.apache.commons.text.StringEscapeUtils;
 
-
-import org.example.hexlet.dto.courses.FooterPage;
 import org.example.hexlet.dto.courses.Page;
+
+import org.example.hexlet.dto.courses.UserPage;
 import org.example.hexlet.dto.courses.UsersPage;
-import org.example.hexlet.dto.courses.WelcomePage;
 import org.example.hexlet.model.User;
 
 import java.util.ArrayList;
@@ -34,14 +34,50 @@ public class HelloWorld {
 
         app.get("/index", ctx -> {
             var page = new Page("Main", "Opisanie");
+
+            ctx.render("courses/index.jte", model("page", page));
+        });
+
+//        app.get("/users/{id}", ctx -> {
+//            List<User> users = new ArrayList<>();
+//            users.add(new User("John", "Doe"));
+//            users.add(new User("John1", "Doe1"));
+//            var id = ctx.pathParamAsClass("id", Integer.class).get();
+//            users.get(id);
+//
+//            var escapedId = StringEscapeUtils.escapeHtml4(String.valueOf(id));
+//            ctx.contentType("text/html");
+//            ctx.result(escapedId);
+//
+//            var page = new UserPage(users.get(id));
+//            ctx.render("users/users", model("page", page));
+//        });
+
+        app.get("/users/{id}", ctx -> {
+            List<User> users = new ArrayList<>();
+            users.add(new User("John", "Doe"));
+            users.add(new User("John1", "Doe1"));
+//            var id = ctx.pathParamAsClass("id", Integer.class).get();
+            var id = ctx.pathParam("id");
+//            var user = users.get(id);
+            var escapedId = StringEscapeUtils.escapeHtml4(String.valueOf(id));
+            ctx.contentType("text/html");
+
+//            var page = new UserPage(user);
+            ctx.result("<h1>" + escapedId + "</h1>");
+//            ctx.render("users/show.jte", model("page", page));
+        });
+
+        app.get("users/", ctx -> {
             List<User> users = new ArrayList<>();
             users.add(new User("John", "Doe"));
             users.add(new User("John1", "Doe1"));
 
-            var context = new UsersPage(users);
-            var footerPage = new FooterPage("Desc", new User("Torkhov", "Nikita"));
-            ctx.render("layout/page.jte", model("page", page, "footerPage", footerPage ,"context", context));
+
+            var page = new UsersPage(users);
+            ctx.render("users/users.jte", model("page", page));
         });
+
         app.start(7070); // Стартуем веб-сервер
         //da
     }

@@ -11,6 +11,8 @@ import lombok.ToString;
 @ToString
 
 public class User {
+    private static long counter = 0;
+
     private Long id;
 
     @ToString.Include
@@ -18,6 +20,7 @@ public class User {
     private String firstName;
 
     public User(String lastName, String firstName) {
+        this.id = counter ++;
         this.lastName = lastName;
         this.firstName = firstName;
     }
