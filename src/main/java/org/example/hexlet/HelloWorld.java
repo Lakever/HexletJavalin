@@ -5,10 +5,12 @@ import io.javalin.rendering.template.JavalinJte;
 import static io.javalin.rendering.template.TemplateUtil.model;
 import org.apache.commons.text.StringEscapeUtils;
 
+import org.example.hexlet.dto.courses.CoursesPage;
 import org.example.hexlet.dto.courses.Page;
 
 import org.example.hexlet.dto.courses.UserPage;
 import org.example.hexlet.dto.courses.UsersPage;
+import org.example.hexlet.model.Course;
 import org.example.hexlet.model.User;
 
 import java.util.ArrayList;
@@ -76,6 +78,25 @@ public class HelloWorld {
 
             var page = new UsersPage(users);
             ctx.render("users/users.jte", model("page", page));
+        });
+
+        app.get("/courses", ctx -> {
+            var term = ctx.queryParam("term");
+            var desc = ctx.queryParam("desc");
+            List<Course> courses = new ArrayList<>();
+            courses.add(new Course("English", "Learning English"));
+            courses.add(new Course("German", "Learning German"));
+            // Фильтруем, только если была отправлена форма
+            if (term != null) {
+                courses = courses.stream().filter(c -> c.getName()
+                        .contains(term)).toList();
+            }
+            if (desc != null) {
+                courses = courses.stream().filter(c -> c.getDescription()
+                        .contains(desc)).toList();
+            }
+            var page = new CoursesPage(courses, term, desc);
+            ctx.render("courses/index.jte", model("page", page));
         });
 
         app.start(7070); // Стартуем веб-сервер

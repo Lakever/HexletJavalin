@@ -9,6 +9,8 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class CoursesPage {
-    private List<Course> courses;
-    private String header;
+    public List<Course> courses;
+    public String term;
+    public String desc;
+
 }
